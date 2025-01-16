@@ -1,0 +1,276 @@
+.card {
+  max-width: 800px;
+  margin: 25px auto;
+  border: 1px solid rgb(173, 173, 173);
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid rgb(173, 173, 173);
+}
+
+.card-header h5 {
+  margin: 0;
+  padding-left: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.card-pic img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-content {
+  text-align: left;
+  line-height: 1.6;
+  padding: 10px 15px;
+}
+
+.card-content .material-symbols-outlined {
+  font-size: 24px;
+  /* color: #ff5252; */
+  cursor: pointer;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.card-content p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.card-content {
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Spacing between elements */
+}
+
+.card-content .material-symbols-outlined {
+  font-size: 24px;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.card-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.add-comment {
+  display: flex;
+  align-items: center;
+  
+
+}
+
+.add-comment input {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+.add-comment button.comment {
+  background-color: #5db5f0;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  
+}
+/* profile */
+.profile {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.profile-frame {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.profile-pic img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.profile-data {
+  text-align: center;
+}
+
+.profile-info {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.profile-info p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+hr {
+  width: 90%;
+  opacity: 0.8;
+  margin: 25px auto;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  width: 50%;
+  margin: 20px auto;
+}
+
+.gallery img {
+  width: calc(33.33% - 10px); /* 3 images per row */
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.05); 
+}
+
+@media (max-width: 768px) {
+  .gallery img {
+    width: calc(50% - 10px); 
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery img {
+    width: 100%;
+  }
+}
+/* create */
+
+.createpost {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.post-header h4 {
+  font-size: 18px;
+  color: #333;
+}
+
+#post-btn {
+  padding: 8px 16px;
+  background-color: #b0b3b0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#post-btn:hover {
+  background-color: #45a049;
+}
+
+.main-div input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.details {
+  margin-top: 20px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-pic img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+h5 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+  resize: vertical;
+  min-height: 100px;
+}
+
+textarea::placeholder {
+  color: #aaa;
+}
+#output{
+  width: 300px;
+  border: none;
+  outline: none;
+  margin-top:5px ;
+}

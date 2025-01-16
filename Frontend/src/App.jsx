@@ -6,24 +6,29 @@ import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Home from "./pages/Home";
+import "./App.css";
+import CreatePost from "./components/CreatePost";
+
 
 
 
 const App = () => {
   return (
-    // <BrowserRouter>
     <Router>
       <div>
       <Navbar />
       <Routes>
+    
+      <Route path="/" element={  <Home/>}></Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/createPost" element={  <CreatePost/>}></Route>
       </Routes>
       <ToastContainer theme="dark"/>
       </div>
     </Router>
-    // </BrowserRouter>
   );
 };
 
