@@ -1,4 +1,4 @@
-.card {
+/* .card {
   max-width: 800px;
   margin: 25px auto;
   border: 1px solid rgb(173, 173, 173);
@@ -35,7 +35,7 @@
   height: auto;
   display: block;
 }
-
+/* 
 .card-content {
   text-align: left;
   line-height: 1.6;
@@ -44,7 +44,7 @@
 
 .card-content .material-symbols-outlined {
   font-size: 24px;
-  /* color: #ff5252; */
+ 
   cursor: pointer;
   vertical-align: middle;
   margin-right: 8px;
@@ -60,8 +60,7 @@
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Spacing between elements */
-}
+  gap: 8px; }
 
 .card-content .material-symbols-outlined {
   font-size: 24px;
@@ -71,10 +70,55 @@
   margin-right: 5px;
 }
 
+
 .card-content p {
   margin: 0;
   font-size: 14px;
   color: #555;
+} 
+.card-content {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  max-width: 400px;
+  margin: 10px;
+}
+
+.material-symbols-outlined {
+  font-size: 24px; 
+  margin: 0 8px; 
+  color: #EA3323; 
+  display: inline-block;
+}
+
+.material-symbols-outlined svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px; 
+}
+
+.card-content p {
+  font-size: 16px;
+  margin: 8px 0;
+  color: #333;
+}
+
+.card-content .like-info {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #777;
+}
+
+.card-content .like-info svg {
+  margin-right: 4px;
+}
+
+.card-content .like-info p {
+  margin-left: 4px;
 }
 
 .add-comment {
@@ -99,7 +143,116 @@
   font-size: 14px;
   cursor: pointer;
   
+} */
+/* home */
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
 }
+
+.card {
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.card-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
+.card-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-header h5 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-image img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.card-content .material-symbols-outlined {
+  font-size: 24px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.card-content .material-symbols-outlined svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.card-content p {
+  margin: 8px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.add-comment {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid #ddd;
+}
+
+.add-comment .material-symbols-outlined {
+  font-size: 24px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.add-comment input {
+  width: 100%;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.add-comment .comment {
+  background-color: #8fc5c1;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+
 /* profile */
 .profile {
   max-width: 800px;
@@ -274,3 +427,6 @@ textarea::placeholder {
   outline: none;
   margin-top:5px ;
 }
+/* home */
+
+

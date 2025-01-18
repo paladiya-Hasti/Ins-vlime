@@ -9,16 +9,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from "./pages/Home";
 import "./App.css";
 import CreatePost from "./components/CreatePost";
-
-import { LoginContext } from "./Context/LoginContext";
+import { LoginContext } from "./context/LoginContext";
+import Model from "./components/Model";
 
 
 const App = () => {
   const [userLogin,setUserLogin]=useState(false)
+  const [modalOpen,setModalOpen]=useState(false)
   return (
     <Router>
       <div>
-        <LoginContext.Provider value={setUserLogin}>
+        <LoginContext.Provider value={{setUserLogin,setModalOpen}}>
         <Navbar login={userLogin}/>
       <Routes>
     
@@ -29,6 +30,8 @@ const App = () => {
         <Route path="/createPost" element={  <CreatePost/>}></Route>
       </Routes>
       <ToastContainer theme="dark"/>
+    
+      {modalOpen && <Model setModalOpen={setModalOpen}></Model>}
         </LoginContext.Provider>
      
       </div>

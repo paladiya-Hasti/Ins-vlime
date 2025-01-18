@@ -1,6 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Profile = () => {
+  const [pic,setPic]=useState([])
+  useEffect(()=>{
+fetch("http://localhost:5000/myposts",{
+  headers:{
+    Authorization:"Bearer " + localStorage.getItem("jwt")
+  }
+}).then(res=>res.json())
+.then((result)=>{setPic(result)})
+
+
+  },[])
   return (
     <div className='profile'>
        <div className="profile-frame">
@@ -19,9 +30,10 @@ const Profile = () => {
         
        </div>
        <hr style={{width:"90%",opacity:"0.8" ,margin:"25px auto"}}/>
-       <div className="gallery  " style={{width:"50%"}}>
-        <img src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D"   alt="" />
-        <img src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D" alt="" /> <img src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D" alt="" /> <img src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D" alt="" /> <img src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D" alt="" /> <img src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D" alt="" />
+       <div className="gallery" >
+       {pic.map((pics)=>{
+        return <img  key={pics._id} src={pics.photo} className='items'></img>
+       })}
        </div>
     </div>
   )

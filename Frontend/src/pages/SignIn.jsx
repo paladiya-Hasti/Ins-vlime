@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginContext } from "../Context/LoginContext";
+import { LoginContext } from "../context/LoginContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -54,14 +54,17 @@ const SignIn = () => {
         notifyA(data.error);
       } else {
         notifyB("Signed In Successfully");
-        navigate("/");
+        console.log(data);
+        
         localStorage.setItem("jwt", data.token);
-        setUserLogin(false); // Set login state to true
+         setUserLogin(true); 
+        navigate("/");
+       
       
       }
     } catch (error) {
       console.error("Error:", error);
-      // notifyA("Something went wrong, please try again.");
+      notifyA("Something went wrong, please try again.");
     }
   };
 
