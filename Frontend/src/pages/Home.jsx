@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GrFavorite } from "react-icons/gr";
 import { CiFaceSmile } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate=useNavigate()
+  useEffect(()=>{
+const token=localStorage.getItem("jwt")
+if(!token){
+navigate("./signup")
+}
+  },[])
   return (
     <div className="card">
       {/* card */}

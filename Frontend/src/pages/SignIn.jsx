@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginContext } from "../Context/LoginContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { setUserLogin } = useContext(LoginContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -16,59 +19,62 @@ const SignIn = () => {
     return password.length >= 6;
   };
 
-  const notifyA = (message) => alert(message); // Replace with toast.error
-  const notifyB = (message) => alert(message); // Replace with toast.success
+  const notifyA = (message) => toast.error(message);
+  const notifyB = (message) => toast.success(message);
 
   const postData = async () => {
     if (!email || !password) {
-      notifyA('Please fill out all fields!');
+      notifyA("Please fill out all fields!");
       return;
     }
 
     if (!validateEmail(email)) {
-      notifyA('Invalid email format');
+      notifyA("Invalid email format");
       return;
     }
 
     if (!validatePassword(password)) {
-      notifyA('Password must be at least 6 characters long');
+      notifyA("Password must be at least 6 characters long");
       return;
     }
 
-    setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/signin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const response = await fetch("http://localhost:5000/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to sign in');
-      }
-
       const data = await response.json();
+
       if (data.error) {
         notifyA(data.error);
       } else {
-        notifyB(data.message);
-        navigate('/');
+        notifyB("Signed In Successfully");
+        navigate("/");
+        localStorage.setItem("jwt", data.token);
+        setUserLogin(false); // Set login state to true
+      
       }
     } catch (error) {
-      notifyA('An error occurred. Please try again.');
-      console.error('Error:', error.message);
-    } finally {
-      setLoading(false);
+      console.error("Error:", error);
+      // notifyA("Something went wrong, please try again.");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Sign In</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Sign In
+        </h1>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email:</label>
+          <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+            Email:
+          </label>
           <input
             type="email"
             name="email"
@@ -80,7 +86,9 @@ const SignIn = () => {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password:</label>
+          <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+            Password:
+          </label>
           <input
             type="password"
             name="password"
@@ -96,11 +104,13 @@ const SignIn = () => {
           onClick={postData}
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
         >
-          {loading ? 'Signing In...' : 'Sign In'}
+          Sign In
         </button>
         <p className="mt-4 text-center text-gray-600">
-          Don't have an account?{' '}
-          <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-500 hover:underline">
+            Sign Up
+          </Link>
         </p>
       </form>
     </div>

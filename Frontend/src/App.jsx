@@ -1,4 +1,4 @@
-import React from "react";
+import React,{createContext, useState} from "react";
 import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import SignIn from "./pages/SignIn";
@@ -10,14 +10,16 @@ import Home from "./pages/Home";
 import "./App.css";
 import CreatePost from "./components/CreatePost";
 
-
+import { LoginContext } from "./Context/LoginContext";
 
 
 const App = () => {
+  const [userLogin,setUserLogin]=useState(false)
   return (
     <Router>
       <div>
-      <Navbar />
+        <LoginContext.Provider value={setUserLogin}>
+        <Navbar login={userLogin}/>
       <Routes>
     
       <Route path="/" element={  <Home/>}></Route>
@@ -27,6 +29,8 @@ const App = () => {
         <Route path="/createPost" element={  <CreatePost/>}></Route>
       </Routes>
       <ToastContainer theme="dark"/>
+        </LoginContext.Provider>
+     
       </div>
     </Router>
   );

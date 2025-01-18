@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Ensure to import this
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const SignUp = () => {
   const validateUsername = (username) => /^[a-zA-Z0-9_]+$/.test(username);
 
   const postData = async () => {
+    console.log({ name, email, userName, email });
     if (!name || !email || !password || !userName) {
       notifyA("Please fill out all fields!");
       return;
@@ -39,48 +41,39 @@ const SignUp = () => {
     }
 
     setLoading(true);
-    try {
-      const response = await fetch("http://localhost:5000/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, userName, email, password }),
+    fetch("http://localhost:5000/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        userName: userName,
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          notifyA(data.error);
+        } else {
+          notifyB(data.message);
+          navigate("/signin");
+        }
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to sign up");
-      }
-
-      const data = await response.json();
-      if (data.error) {
-        notifyA(data.error);
-      } else {
-        notifyB(data.message);
-        navigate("/signin");
-      }
-    } catch (error) {
-      notifyA(error.message || "An error occurred. Please try again.");
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <form
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
-        onSubmit={(e) => {
-          e.preventDefault();
-          postData();
-        }}
-      >
+      <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Sign Up
         </h1>
 
         <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
+          <label
+            htmlFor="name"
+            className="block text-gray-700 font-medium mb-2"
+          >
             Name:
           </label>
           <input
@@ -94,7 +87,10 @@ const SignUp = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+          <label
+            htmlFor="email"
+            className="block text-gray-700 font-medium mb-2"
+          >
             Email:
           </label>
           <input
@@ -109,14 +105,14 @@ const SignUp = () => {
 
         <div className="mb-4">
           <label
-            htmlFor="username"
+            htmlFor="userName"
             className="block text-gray-700 font-medium mb-2"
           >
             Username:
           </label>
           <input
             type="text"
-            id="username"
+            id="userName"
             value={userName}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
@@ -140,13 +136,12 @@ const SignUp = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+      
 
         <button
-          type="submit"
-          className={`w-full py-2 px-4 rounded-lg transition duration-300 ${
-            loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600 text-white"
-          }`}
-          disabled={loading}
+          type="button"
+          onClick={()=>postData()}
+          className={`w-full bg-blue-500 text-white py-2 px-4 rounded-lg transition duration-300 ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
         >
           {loading ? "Signing Up..." : "Sign Up"}
         </button>
