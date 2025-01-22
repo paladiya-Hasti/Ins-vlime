@@ -6,7 +6,6 @@ import "./Home.css";
 export default function Home() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  // console.log(data);
 
   const [comment, setComment] = useState("");
   const [show, setShow] = useState(false);
@@ -68,6 +67,8 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((result) => {
+        console.log(result);
+
         const newData = data.map((posts) => {
           if (posts._id == result._id) {
             return result;
@@ -103,8 +104,6 @@ export default function Home() {
         console.log(result);
       });
   };
-  
-  // function to make comment
   const makeComment = (text, id) => {
     fetch("http://localhost:5000/comment", {
       method: "put",
@@ -137,8 +136,6 @@ export default function Home() {
     <div className="home">
       {/* card */}
       {data.map((posts) => {
-        
-        
         return (
           <div className="card">
             {/* card header */}
@@ -150,15 +147,14 @@ export default function Home() {
                 />
               </div>
               <h5>
-        {posts.postedBy ? (
-          <Link to={`/profile/${posts.postedBy._id}`}>
-            {posts.postedBy.name || "Unknown User"}
-          </Link>
-        ) : (
-          <span>Unknown User</span>
-        )}
-      </h5>
-
+                {posts.postedBy ? (
+                  <Link to={`/profile/${posts.postedBy._id}`}>
+                    {posts.postedBy.name || "Unknown User"}
+                  </Link>
+                ) : (
+                  <span>Unknown User</span>
+                )}
+              </h5>
             </div>
             {/* card image */}
             <div className="card-image">
@@ -166,7 +162,7 @@ export default function Home() {
             </div>
 
             {/* card content  */}
-             <div className="card-content">
+            <div className="card-content">
               {posts.likes.includes(
                 JSON.parse(localStorage.getItem("user"))._id
               ) ? (

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Profile.css";
+
+
 const ProfilePic = ({changeprofile}) => {
 const hiddenFileInput=useRef(null)
 const [image, setImage] = useState("");
@@ -14,8 +16,7 @@ const [image, setImage] = useState("");
   fetch("https://api.cloudinary.com/v1_1/cantacloud2/image/upload", {
     method: "post",
     body: data,
-  })
-    .then((res) => res.json())
+  }).then((res) => res.json())
     .then((data) => setUrl(data.url))
     .catch((err) => console.log(err));
 };

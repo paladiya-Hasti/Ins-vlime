@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { PostDetails } from "../components/PostDetails";
-// import "./Profile.css";
-import ProfilePic from 
-"../components/ProfilePic";
+import ProfilePic from "../components/ProfilePic";
 
 export default function Profie() {
-  var picLink = "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
-  const [pic, setPic] = useState([]);
-  const [show, setShow] = useState(false)
+  const picLink = "https://cdn-icons-png.flaticon.com/128/3177/3177440.png";
+  const [pic, setPic] = useState([]); // Ensure pic is always an array
+  const [show, setShow] = useState(false);
   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState("")
-  const [changePic, setChangePic] = useState(false)
-
+  const [user, setUser] = useState("");
+  const [changePic, setChangePic] = useState(false);
 
   const toggleDetails = (posts) => {
     if (show) {
@@ -24,26 +21,30 @@ export default function Profie() {
 
   const changeprofile = () => {
     if (changePic) {
-      setChangePic(false)
+      setChangePic(false);
     } else {
-      setChangePic(true)
+      setChangePic(true);
     }
-  }
-
+  };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${JSON.parse(localStorage.getItem("user"))._id}`, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-      },
-    })
+    fetch(
+      `http://localhost:5000/user/${
+        JSON.parse(localStorage.getItem("user"))._id
+      }`,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    )
       .then((res) => res.json())
       .then((result) => {
-        console.log(result)
-        setPic(result.posts);
-        setUser(result.user)
-        console.log(pic);
-      });
+        console.log(result);
+        setPic(result.post || []); // Ensure pic is always an array
+        setUser(result.user);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -62,7 +63,7 @@ export default function Profie() {
         <div className="pofile-data">
           <h1>{JSON.parse(localStorage.getItem("user")).name}</h1>
           <div className="profile-info" style={{ display: "flex" }}>
-            <p>{pic ? pic.length : "0"} posts</p>
+            <p>{pic.length} posts</p>
             <p>{user.followers ? user.followers.length : "0"} followers</p>
             <p>{user.following ? user.following.length : "0"} following</p>
           </div>
@@ -71,29 +72,26 @@ export default function Profie() {
       <hr
         style={{
           width: "90%",
-
           opacity: "0.8",
           margin: "25px auto",
         }}
       />
       {/* Gallery */}
       <div className="gallery">
-        {pic.map((pics) => {
-          return <img key={pics._id} src={pics.photo}
-            onClick={() => {
-              toggleDetails(pics)
-            }}
-            className="item"></img>;
-        })}
+        {Array.isArray(pic) &&
+          pic.map((pics) => {
+            return (
+              <img
+                key={pics._id}
+                src={pics.photo}
+                onClick={() => toggleDetails(pics)}
+                className="item"
+              />
+            );
+          })}
       </div>
-      {show &&
-      <PostDetails item={posts} toggleDetails={toggleDetails}/>
-
-      }
-      {
-        changePic &&
-        <ProfilePic changeprofile={changeprofile} />
-      }
+      {show && <PostDetails item={posts} toggleDetails={toggleDetails} />}
+      {changePic && <ProfilePic changeprofile={changeprofile} />}
     </div>
   );
 }

@@ -42,31 +42,29 @@ router.get("/myposts", requireLogin, (req, res) => {
 
 
 router.put("/like", requireLogin, async (req, res) => {
-
-  POST.find({ postedBy: req.user._id }) // તમારી mongoose query
-    .exec()
-    .then((posts) => {
-        res.json(posts);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send("Server Error");
-    });
-
-  
+  try {
+    const result = await POST.findByIdAndUpdate(
+      req.body.postId,
+      { $push: { likes: req.user._id } },
+      { new: true }
+    ).populate("postedBy","_id name")
+    res.json(result);
+  } catch (err) {
+    res.status(422).json({ error: err });
+  }
 });
 
 router.put("/unlike", requireLogin, async (req, res) => {
-  POST.find({ postedBy: req.user._id }) // તમારી mongoose query
-  .exec()
-  .then((posts) => {
-      res.json(posts);
-  })
-  .catch((err) => {
-      console.error(err);
-      res.status(500).send("Server Error");
-  });
-  
+  try {
+    const result = await POST.findByIdAndUpdate(
+      req.body.postId,
+      { $pull: { likes: req.user._id } },
+      { new: true }
+    ).populate("postedBy","_id name")
+    res.json(result);
+  } catch (err) {
+    res.status(422).json({ error: err });
+  }
 });
 
 router.put("/comment", requireLogin, async (req, res) => {
@@ -87,53 +85,30 @@ router.put("/comment", requireLogin, async (req, res) => {
   }
 });
 
-// Api to delete post
-// router.delete("/deletePost/:postId", requireLogin,  (req, res) => {
-
-// POST.findOne({id:req.params.postId})
-// .populate("postedBy","_id")  
-// .exec((err,post)=>{
-//   if(err || !post){
-//     return res.status(422).json({error:err})
-//   }
-//   if(post.postedBy._id == res.user._id){
-//     console.log("match");
-    
-//   }
-// if(post.postId._id.toString(),req.user._id.toString()){
-//     post.remove()
-//     .then(result=>{
-//       return res.json({message:"successfully delete"})
-//     }).catch((err)=>{
-//       console.log(err);
-      
-//     })
-//   }
-  
-// })
-  
-// });
-
 router.delete("/deletePost/:postId", requireLogin, async (req, res) => {
-  const { postId } = req.params;
-
-  // Validate postId
-  const mongoose = require("mongoose");
-  if (!mongoose.Types.ObjectId.isValid(postId)) {
-    return res.status(400).json({ error: "Invalid postId format" });
-  }
-
   try {
-    const post = await Post.findByIdAndDelete(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-    res.json({ message: "Post deleted successfully", post });
-  } catch (err) {
-    console.error("Error deleting post:", err);
-    res.status(500).json({ error: "Server error" });
+     
+      const post = await POST.findOne({ _id: req.params.postId }).populate("postedBy", "_id");
+
+      if (!post) {
+          return res.status(404).json({ error: "Post not found" });
+      }
+
+      
+      if (post.postedBy._id.toString() !== req.user._id.toString()) {
+          return res.status(403).json({ error: "Unauthorized action" });
+      }
+
+        await post.deleteOne();
+
+      res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+      console.error("Error deleting post:", error);
+      res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
 
 
 
