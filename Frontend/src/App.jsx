@@ -11,6 +11,8 @@ import "./App.css";
 import CreatePost from "./components/CreatePost";
 import { LoginContext } from "./context/LoginContext";
 import Model from "./components/Model";
+import UserProfile from "./components/UserProfile";
+import Myfollowing from "./components/Myfollowing";
 
 
 const App = () => {
@@ -26,9 +28,12 @@ const App = () => {
       <Route path="/" element={  <Home/>}></Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route exact path="/profile" element={<Profile />} />
         <Route path="/createPost" element={  <CreatePost/>}></Route>
+        <Route path="/profile/:userid" element={  <UserProfile/>}></Route>
+        <Route path="/followingpost" element={<Myfollowing/>}></Route>
       </Routes>
+
       <ToastContainer theme="dark"/>
     
       {modalOpen && <Model setModalOpen={setModalOpen}></Model>}

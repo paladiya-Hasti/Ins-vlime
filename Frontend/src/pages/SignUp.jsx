@@ -62,6 +62,8 @@ const SignUp = () => {
       });
   };
 
+
+  
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">

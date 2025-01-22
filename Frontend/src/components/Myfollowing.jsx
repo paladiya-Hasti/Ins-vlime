@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { GrFavorite } from "react-icons/gr";
 import { Link } from "react-router-dom";
-import "./Home.css";
-export default function Home() {
+
+export default function Myfollowing() {
+  
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  // console.log(data);
-
+  console.log(data);
+  
   const [comment, setComment] = useState("");
   const [show, setShow] = useState(false);
   const [item, setItem] = useState([]);
@@ -18,43 +20,39 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (!token) {
-      notifyA("Please log in again.");
       navigate("./signup");
-      return;
     }
 
-    fetch("http://localhost:5000/allPosts", {
+    // Fetching all posts
+    fetch("http://localhost:5000/allposts", {
       headers: {
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP Error: ${res.status}`);
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((result) => {
+        // console.log(result);
         setData(result);
       })
-      .catch((err) => {
-        console.error("Error fetching posts:", err);
-        notifyA("Failed to fetch posts.");
-      });
+      .catch((err) => console.log(err));
   }, []);
 
   const toggleComment = (posts) => {
     if (show) {
       setShow(false);
       console.log("hide");
+      
     } else {
       setShow(true);
       setItem(posts);
       console.log(item);
-
+      
       console.log("show");
+      
     }
   };
+
+  
   const likePost = (id) => {
     fetch("http://localhost:5000/like", {
       method: "put",
@@ -66,18 +64,30 @@ export default function Home() {
         postId: id,
       }),
     })
-      .then((res) => res.json())
-      .then((result) => {
-        const newData = data.map((posts) => {
-          if (posts._id == result._id) {
-            return result;
-          } else {
-            return posts;
-          }
-        });
-        setData(newData);
-        console.log(result);
+    .then((res) => res.json())
+    .then((result) => {
+     
+      if (!result || !result._id) {
+        console.error("Invalid response from server:", result);
+        return; 
+      }
+    
+      
+      const newData = data.map((posts) => {
+        if (posts._id === result._id) {
+          return result;
+        } else {
+          return posts; 
+        }
       });
+    
+      setData(newData);
+      console.log("Updated result:", result);
+    })
+    .catch((err) => {
+      console.error("Error during fetch:", err);
+    });
+    
   };
   const unlikePost = (id) => {
     fetch("http://localhost:5000/unlike", {
@@ -103,6 +113,8 @@ export default function Home() {
         console.log(result);
       });
   };
+  
+  
   
   // function to make comment
   const makeComment = (text, id) => {
@@ -137,8 +149,6 @@ export default function Home() {
     <div className="home">
       {/* card */}
       {data.map((posts) => {
-        
-        
         return (
           <div className="card">
             {/* card header */}
@@ -150,25 +160,19 @@ export default function Home() {
                 />
               </div>
               <h5>
-        {posts.postedBy ? (
-          <Link to={`/profile/${posts.postedBy._id}`}>
-            {posts.postedBy.name || "Unknown User"}
-          </Link>
-        ) : (
-          <span>Unknown User</span>
-        )}
-      </h5>
-
+              <h5>Ayushi</h5>
+                {/* <Link to={`/profile/${posts.postedBy._id}`}>{posts.postedBy.name}</Link> */}
+                </h5>
             </div>
             {/* card image */}
             <div className="card-image">
               <img src={posts.photo} alt="" />
             </div>
 
-            {/* card content  */}
-             <div className="card-content">
+            {/* card content */}
+            <div className="card-content">
               {posts.likes.includes(
-                JSON.parse(localStorage.getItem("user"))._id
+                // JSON.parse(localStorage.getItem("user"))._id
               ) ? (
                 <span
                   className="material-symbols-outlined material-symbols-outlined-red"
@@ -185,12 +189,22 @@ export default function Home() {
                     likePost(posts._id);
                   }}
                 >
-                  favorite
+                  {/* favorite */}
                 </span>
               )}
 
-              <p>{posts.likes.length} Likes</p>
-              <p>{posts.body} </p>
+              <span
+                onClick={() => {
+                  likePost(posts.id);
+                }}
+                class="material-symbols-outlined"
+              >
+                <GrFavorite />
+              </span>
+
+
+              <p>{item.likes} Likes</p>
+              <p>{item.body} </p>
               <p
                 style={{ fontWeight: "bold", cursor: "pointer" }}
                 onClick={() => {
@@ -244,7 +258,7 @@ export default function Home() {
                     alt=""
                   />
                 </div>
-                {/* <h5>{item.postedBy.name}</h5> */}
+                <h5>{item.postedBy.name}</h5>
               </div>
 
               {/* commentSection */}
@@ -311,3 +325,5 @@ export default function Home() {
     </div>
   );
 }
+
+

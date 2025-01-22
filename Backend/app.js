@@ -12,7 +12,7 @@ console.log(process.env);
 app.use(express.json())
 app.use(require("./router/auth"))
 app.use(require("./router/createPost"))
-
+app.use(require("./router/user"))
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 DBconnect()

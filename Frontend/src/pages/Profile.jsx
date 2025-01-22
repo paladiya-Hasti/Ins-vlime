@@ -1,42 +1,99 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
+import { PostDetails } from "../components/PostDetails";
+// import "./Profile.css";
+import ProfilePic from 
+"../components/ProfilePic";
 
-const Profile = () => {
-  const [pic,setPic]=useState([])
-  useEffect(()=>{
-fetch("http://localhost:5000/myposts",{
-  headers:{
-    Authorization:"Bearer " + localStorage.getItem("jwt")
+export default function Profie() {
+  var picLink = "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
+  const [pic, setPic] = useState([]);
+  const [show, setShow] = useState(false)
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState("")
+  const [changePic, setChangePic] = useState(false)
+
+
+  const toggleDetails = (posts) => {
+    if (show) {
+      setShow(false);
+    } else {
+      setShow(true);
+      setPosts(posts);
+    }
+  };
+
+  const changeprofile = () => {
+    if (changePic) {
+      setChangePic(false)
+    } else {
+      setChangePic(true)
+    }
   }
-}).then(res=>res.json())
-.then((result)=>{setPic(result)})
 
 
-  },[])
+  useEffect(() => {
+    fetch(`http://localhost:5000/user/${JSON.parse(localStorage.getItem("user"))._id}`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result)
+        setPic(result.posts);
+        setUser(result.user)
+        console.log(pic);
+      });
+  }, []);
+
   return (
-    <div className='profile'>
-       <div className="profile-frame">
+    <div className="profile">
+      {/* Profile frame */}
+      <div className="profile-frame">
+        {/* profile-pic */}
         <div className="profile-pic">
-          <img src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D" alt="" />
+          <img
+            onClick={changeprofile}
+            src={user.Photo ? user.Photo : picLink}
+            alt=""
+          />
         </div>
-        <div className="profile-data">
-          <h1>canta coder</h1>
-<div className="profile-info" style={{display:"flex"}}>
-          <p>40 posts</p>
-          <p>40following</p>
-          <p>40 followers</p>
-</div>
+        {/* profile-data */}
+        <div className="pofile-data">
+          <h1>{JSON.parse(localStorage.getItem("user")).name}</h1>
+          <div className="profile-info" style={{ display: "flex" }}>
+            <p>{pic ? pic.length : "0"} posts</p>
+            <p>{user.followers ? user.followers.length : "0"} followers</p>
+            <p>{user.following ? user.following.length : "0"} following</p>
+          </div>
         </div>
-       
-        
-       </div>
-       <hr style={{width:"90%",opacity:"0.8" ,margin:"25px auto"}}/>
-       <div className="gallery" >
-       {pic.map((pics)=>{
-        return <img  key={pics._id} src={pics.photo} className='items'></img>
-       })}
-       </div>
-    </div>
-  )
-}
+      </div>
+      <hr
+        style={{
+          width: "90%",
 
-export default Profile
+          opacity: "0.8",
+          margin: "25px auto",
+        }}
+      />
+      {/* Gallery */}
+      <div className="gallery">
+        {pic.map((pics) => {
+          return <img key={pics._id} src={pics.photo}
+            onClick={() => {
+              toggleDetails(pics)
+            }}
+            className="item"></img>;
+        })}
+      </div>
+      {show &&
+      <PostDetails item={posts} toggleDetails={toggleDetails}/>
+
+      }
+      {
+        changePic &&
+        <ProfilePic changeprofile={changeprofile} />
+      }
+    </div>
+  );
+}

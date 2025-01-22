@@ -57,6 +57,8 @@ const SignIn = () => {
         console.log(data);
         
         localStorage.setItem("jwt", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
          setUserLogin(true); 
         navigate("/");
        
@@ -67,6 +69,8 @@ const SignIn = () => {
       notifyA("Something went wrong, please try again.");
     }
   };
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">

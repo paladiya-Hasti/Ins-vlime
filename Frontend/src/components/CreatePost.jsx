@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import './createPost.css'
 import { useNavigate } from "react-router-dom";
 export const CreatePost = () => {
   const [body, setBody] = useState("");
