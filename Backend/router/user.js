@@ -25,47 +25,9 @@ router.get("/user/:id", async (req, res) => {
 });
 
 
-// router.put("/follow",requireLogin,(req,res)=>{
-//   USER.findByIdAndUpdate(req.body.followId,{
-//     $push:{followers:req.user._id}
-//   },{
-//     new:true
-//   },(err,result)=>{
-//     if(err){
-//       return res.status(422).json({error:err})
-//     }
-//     USER.findByIdAndUpdate(req.user._id,{
-//       $push:{following:req.body.followId}
-//     },{
-//       new:true
-//     }).then(res=>res.json())
-//     .then(err=>{return res.status(422).json({error:err})})
-//   })
-// })
 
-// router.put("/unfollow",requireLogin,(req,res)=>{
-//   USER.findByIdAndUpdate(req.body.followId,{
-//     $pull:{followers:req.user._id}
-//   },{
-//     new:true
-//   },(err,result)=>{
-//     if(err){
-//       return res.status(422).json({error:err})
-//     }
-//     USER.findByIdAndUpdate(req.user._id,{
-//       $pull:{following:req.body.followId}
-//     },{
-//       new:true
-//     }).then(res=>res.json())
-//     .then(err=>{return res.status(422).json({error:err})})
-//   })
-// })
-
-
-// Follow API
 router.put("/follow", requireLogin, async (req, res) => {
   try {
-    // दूसरे उपयोगकर्ता के followers में लॉग-इन उपयोगकर्ता को जोड़ें
     const followedUser = await USER.findByIdAndUpdate(
       req.body.followId,
       { $push: { followers: req.user._id } },
@@ -76,7 +38,6 @@ router.put("/follow", requireLogin, async (req, res) => {
       return res.status(404).json({ error: "User to follow not found" });
     }
 
-    // लॉग-इन उपयोगकर्ता के following में दूसरे उपयोगकर्ता को जोड़ें
     const currentUser = await USER.findByIdAndUpdate(
       req.user._id,
       { $push: { following: req.body.followId } },
@@ -89,10 +50,8 @@ router.put("/follow", requireLogin, async (req, res) => {
   }
 });
 
-// Unfollow API
 router.put("/unfollow", requireLogin, async (req, res) => {
   try {
-    // दूसरे उपयोगकर्ता के followers से लॉग-इन उपयोगकर्ता को हटाएँ
     const unfollowedUser = await USER.findByIdAndUpdate(
       req.body.followId,
       { $pull: { followers: req.user._id } },
@@ -103,7 +62,6 @@ router.put("/unfollow", requireLogin, async (req, res) => {
       return res.status(404).json({ error: "User to unfollow not found" });
     }
 
-    // लॉग-इन उपयोगकर्ता के following से दूसरे उपयोगकर्ता को हटाएँ
     const currentUser = await USER.findByIdAndUpdate(
       req.user._id,
       { $pull: { following: req.body.followId } },

@@ -7,6 +7,7 @@ export default function Profie() {
   const [pic, setPic] = useState([]); // Ensure pic is always an array
   const [show, setShow] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [img, setImg] = useState("initialImage.jpg");
   const [user, setUser] = useState("");
   const [changePic, setChangePic] = useState(false);
 
@@ -25,6 +26,10 @@ export default function Profie() {
     } else {
       setChangePic(true);
     }
+  };
+  const handleImageChange = (event) => {
+    const newImage = URL.createObjectURL(event.target.files[0]);
+    setImg(newImage); // Update the image URL
   };
 
   useEffect(() => {
@@ -54,6 +59,7 @@ export default function Profie() {
         {/* profile-pic */}
         <div className="profile-pic">
           <img
+          onChange={handleImageChange}
             onClick={changeprofile}
             src={user.Photo ? user.Photo : picLink}
             alt=""

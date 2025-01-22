@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import './createPost.css'
+import './CreatePost.css'
 import { useNavigate } from "react-router-dom";
 export const CreatePost = () => {
   const [body, setBody] = useState("");
@@ -12,18 +12,6 @@ export const CreatePost = () => {
 
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
-  //   const data = new FormData();
-  //   data.append("file", image);
-  //   data.append("upload_preset", "insta-clone");
-  //   data.append("cloud_name", "hasticloud");
-  //   fetch("https://api.cloudinary.com/v1_1/hasticloud/image/upload", {
-  //     method: "post",
-  //     body: data,
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => setUrl(data.url))
-  //     .catch((err) => console.log(err));
-  // };
 
   useEffect(() => {
     // saving post to mongodb

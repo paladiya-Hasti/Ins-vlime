@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import logo5 from "../img/logo5.jpeg";
+import logo1 from "../img/logo1.png"
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import { LoginContext } from "../context/LoginContext";
@@ -41,7 +41,7 @@ export default function Navbar({ login }) {
 
   return (
     <div className="navbar">
-      <img src={logo5} className="logo" />
+      <img src={logo1} className="logo" />
       {/* <h1 >Instagram</h1> */}
       <ul className="nav-menu">{loginStatus()}</ul>
     </div>

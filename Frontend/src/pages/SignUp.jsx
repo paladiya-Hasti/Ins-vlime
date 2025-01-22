@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Ensure to import this
-
+import "./Signup.css";
 const SignUp = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
